@@ -14,7 +14,6 @@ export default function EditProfile() {
     getMe().then(user => {
       setUserName(user.username ?? '');
       setEmail(user.email ?? '');
-      setAvatar(user.avatar ?? null);
     });
   }, []);
 
@@ -24,7 +23,7 @@ export default function EditProfile() {
 
   const handleSaveUser = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    await updateMe({ email, userName });
+    await updateMe({ userName });
   };
 
   return (
