@@ -6,7 +6,7 @@ import { register } from '@/lib/api/clientApi';
 import { useState } from 'react';
 import { useAuthStore } from '@/lib/store/authStore';
 import { RegisterRequest } from '@/lib/api/clientApi';
-import { ApiError } from 'next/dist/server/api-utils';
+import { isAxiosError } from 'axios';
 
 export default function SignUp() {
   const router = useRouter();
@@ -24,11 +24,11 @@ export default function SignUp() {
         setError('Invalid email or password');
       }
     } catch (error) {
-      setError(
-        (error as ApiError).response?.data?.error ??
-          (error as ApiError).message ??
-          'Oops... some error'
-      );
+      if (isAxiosError(error)) {
+        setError(error.message);
+      } else {
+        setError('Server error');
+      }
     }
   };
 
