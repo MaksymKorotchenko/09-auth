@@ -24,7 +24,7 @@ export default function EditProfile() {
 
   const handleSaveUser = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    await updateMe(userName);
+    await updateMe({ email, userName });
   };
 
   return (
@@ -47,6 +47,7 @@ export default function EditProfile() {
               id="username"
               type="text"
               className={css.input}
+              value={userName}
               onChange={handleChange}
             />
           </div>

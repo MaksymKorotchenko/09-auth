@@ -25,6 +25,11 @@ interface NewNote {
   tag: NoteTag;
 }
 
+export type UpdateUserRequest = {
+  email?: string;
+  userName?: string;
+};
+
 export const register = async (data: RegisterRequest) => {
   const res = await nextServer.post<User>('/auth/register', data);
   return res.data;
@@ -45,8 +50,8 @@ export const getMe = async () => {
   return data;
 };
 
-export const updateMe = async (payload: string) => {
-  const res = await nextServer.put<User>('/auth/me', payload);
+export const updateMe = async (payload: UpdateUserRequest) => {
+  const res = await nextServer.patch<User>('/users/me', payload);
   return res.data;
 };
 
