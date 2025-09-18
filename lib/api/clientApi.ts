@@ -1,10 +1,16 @@
+import { User } from '@/types/user';
+import { nextServer } from './api';
+import { Note, NoteTag } from '@/types/note';
 import axios from 'axios';
-import type { Note, NoteTag } from '../types/note';
 
-axios.defaults.baseURL = 'https://notehub-public.goit.study/api';
-axios.defaults.headers.common['Authorization'] = `Bearer ${
-  process.env.NEXT_PUBLIC_NOTEHUB_TOKEN
-}`;
+export type RegisterRequest = {
+  email: string;
+  password: string;
+};
+
+type CheckSessionRequest = {
+  success: boolean;
+};
 
 interface NotesResponse {
   notes: Note[];
@@ -18,6 +24,35 @@ interface NewNote {
   content?: string;
   tag: NoteTag;
 }
+
+export const register = async (data: RegisterRequest) => {
+  const res = await nextServer.post<User>('/auth/register', data);
+  return res.data;
+};
+
+export const login = async (data: RegisterRequest) => {
+  const res = await nextServer.post<User>('/auth/login', data);
+  return res.data;
+};
+
+export const checkSession = async () => {
+  const res = await nextServer.get<CheckSessionRequest>('/auth/session');
+  return res.data.success;
+};
+
+export const getMe = async () => {
+  const { data } = await nextServer.get<User>('/users/me');
+  return data;
+};
+
+export const updateMe = async (payload: string) => {
+  const res = await nextServer.put<User>('/auth/me', payload);
+  return res.data;
+};
+
+export const logout = async (): Promise<void> => {
+  await nextServer.post('/auth/logout');
+};
 
 export const fetchNotes = async (
   searchNoteName: string,

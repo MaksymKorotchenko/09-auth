@@ -2,12 +2,9 @@
 
 import Link from 'next/link';
 import css from './Header.module.css';
-import TagsMenu from '../TagsMenu/TagsMenu';
-import { useState } from 'react';
+import AuthNavigagtion from '../AuthNavigation/AuthNavigation';
 
 export default function Header() {
-  const [isTagsOpen, setIsTagsOpen] = useState(false);
-
   return (
     <header className={css.header}>
       <Link href="/" aria-label="Home">
@@ -18,13 +15,7 @@ export default function Header() {
           <li>
             <Link href="/">Home</Link>
           </li>
-          <li>
-            <TagsMenu
-              isOpen={isTagsOpen}
-              onEnter={() => setIsTagsOpen(true)}
-              onLeave={() => setIsTagsOpen(false)}
-            ></TagsMenu>
-          </li>
+          <AuthNavigagtion></AuthNavigagtion>
         </ul>
       </nav>
     </header>
