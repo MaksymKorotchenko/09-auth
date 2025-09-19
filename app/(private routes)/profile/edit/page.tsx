@@ -29,6 +29,7 @@ export default function EditProfile() {
       const user = await updateMe({ username: userName });
       setUserName(user.username);
       setUser(user);
+      router.push('/profile');
     } catch (error) {
       console.error('Oops, some error:', error);
     }
