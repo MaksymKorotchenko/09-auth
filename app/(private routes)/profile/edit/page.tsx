@@ -40,7 +40,10 @@ export default function EditProfile() {
         <h1 className={css.formTitle}>Edit Profile</h1>
 
         <Image
-          src={user.avatar}
+          src={
+            user?.avatar ??
+            'https://ac.goit.global/fullstack/react/default-avatar.jpg'
+          }
           alt="User Avatar"
           width={120}
           height={120}
