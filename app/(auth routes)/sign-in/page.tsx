@@ -5,10 +5,12 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import css from './SignInPage.module.css';
 import { isAxiosError } from 'axios';
+import { useAuthStore } from '@/lib/store/authStore';
 
 const SignIn = () => {
   const router = useRouter();
   const [error, setError] = useState('');
+  const setUser = useAuthStore(state => state.setUser);
 
   const handleSubmit = async (formData: FormData) => {
     try {
@@ -17,6 +19,7 @@ const SignIn = () => {
       if (res) {
         router.push('/profile');
       } else {
+        setUser(res);
         setError('Invalid email or password');
       }
     } catch (error) {

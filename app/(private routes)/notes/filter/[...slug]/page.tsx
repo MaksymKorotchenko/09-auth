@@ -1,11 +1,11 @@
-import { fetchNotes } from '@/lib/api/clientApi';
-import Notes from './Notes.client';
+import { fetchServerNotes } from '@/lib/api/serverApi';
 import {
   dehydrate,
   HydrationBoundary,
   QueryClient,
 } from '@tanstack/react-query';
 import { Metadata } from 'next';
+import Notes from './Notes.client';
 
 type Params = {
   params: Promise<{ slug: string[] }>;
@@ -41,7 +41,7 @@ export default async function App({ params }: Params) {
 
   await queryClient.prefetchQuery({
     queryKey: ['notes', { search: '', page: 1, perPage: 12, tag }],
-    queryFn: () => fetchNotes('', 1, 12, tag),
+    queryFn: () => fetchServerNotes('', 1, 12, tag),
   });
 
   return (

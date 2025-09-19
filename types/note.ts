@@ -14,3 +14,10 @@ export interface FormValues {
 }
 
 export type NoteTag = 'Work' | 'Personal' | 'Meeting' | 'Shopping' | 'Todo';
+
+export interface NotesResponse {
+  notes: Note[];
+  page: number;
+  perPage: number;
+  totalPages: number;
+}

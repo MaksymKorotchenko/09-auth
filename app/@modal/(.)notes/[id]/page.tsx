@@ -1,4 +1,4 @@
-import { fetchNoteById } from '@/lib/api/clientApi';
+import { fetchServerNoteById } from '@/lib/api/serverApi';
 import {
   dehydrate,
   HydrationBoundary,
@@ -16,7 +16,7 @@ export default async function NotePreview({ params }: NotePreviewProps) {
 
   await queryClient.prefetchQuery({
     queryKey: ['note', id],
-    queryFn: () => fetchNoteById(id),
+    queryFn: () => fetchServerNoteById(id),
   });
 
   return (

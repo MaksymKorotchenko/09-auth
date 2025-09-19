@@ -4,16 +4,18 @@ import css from './EditProfilePage.module.css';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { getMe, updateMe } from '@/lib/api/clientApi';
+import { useRouter } from 'next/navigation';
+import { useAuthStore } from '@/lib/store/authStore';
 
 export default function EditProfile() {
+  const router = useRouter();
   const [userName, setUserName] = useState('');
-  const [email, setEmail] = useState('');
-  const [avatar, setAvatar] = useState('');
+  const user = useAuthStore(state => state.user);
+  const setUser = useAuthStore(state => state.setUser);
 
   useEffect(() => {
     getMe().then(user => {
       setUserName(user.username ?? '');
-      setEmail(user.email ?? '');
     });
   }, []);
 
@@ -23,7 +25,13 @@ export default function EditProfile() {
 
   const handleSaveUser = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    await updateMe({ userName });
+    try {
+      const user = await updateMe({ username: userName });
+      setUserName(user.username);
+      setUser(user);
+    } catch (error) {
+      console.error('Oops, some error:', error);
+    }
   };
 
   return (
@@ -32,7 +40,7 @@ export default function EditProfile() {
         <h1 className={css.formTitle}>Edit Profile</h1>
 
         <Image
-          src={avatar}
+          src={user.avatar}
           alt="User Avatar"
           width={120}
           height={120}
@@ -51,13 +59,17 @@ export default function EditProfile() {
             />
           </div>
 
-          <p>Email: {email}</p>
+          <p>Email: {user?.email}</p>
 
           <div className={css.actions}>
             <button type="submit" className={css.saveButton}>
               Save
             </button>
-            <button type="button" className={css.cancelButton}>
+            <button
+              type="button"
+              className={css.cancelButton}
+              onClick={() => router.push('/profile')}
+            >
               Cancel
             </button>
           </div>
